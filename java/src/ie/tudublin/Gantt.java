@@ -9,6 +9,9 @@ import processing.data.TableRow;
 public class Gantt extends PApplet
 {	
 	public ArrayList<Task> tasks = new ArrayList<Task>();
+
+	float rightMargin = 0;
+	float leftMargin = 0;
 	
 	public void settings()
 	{
@@ -42,7 +45,7 @@ public class Gantt extends PApplet
 	public void mouseDragged()
 	{
 		println("Mouse dragged");
-		// float space = (leftMargin - rightMargin) / 30;
+		float space = (leftMargin - rightMargin) / 30;
 	}
 
 	public void displayTasks()
@@ -50,14 +53,13 @@ public class Gantt extends PApplet
 		float x = 0;
 		float textY = height * 0.05f;
 		float lineY = height * 0.075f;
-		float rightMargin = width * 0.15f;
-		float leftMargin = width - (width * 0.05f);
 
 		float taskY = height * 0.15f;
 		float barH = height * 0.07f;
 		float hue = 0;
 		float barStart = 0;
 		float barEnd = 0;
+		float barW = 0;
 
 		for(int i = 1; i <= 30; i++)
 		{
@@ -81,7 +83,8 @@ public class Gantt extends PApplet
 			noStroke();
 			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
 			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
-			rect(barStart, y - barH / 2, barEnd - barStart, barH, 5);
+			barW = barEnd - barStart;
+			rect(barStart, y - barH / 2, barW, barH, 5);
 		}
 	}
 	
@@ -92,6 +95,8 @@ public class Gantt extends PApplet
 		fill(255);
 		stroke(255);
 		colorMode(HSB);
+		rightMargin = width * 0.15f;
+		leftMargin = width - (width * 0.05f);
 	}
 	
 	public void draw()
