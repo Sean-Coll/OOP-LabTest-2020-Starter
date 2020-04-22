@@ -42,6 +42,7 @@ public class Gantt extends PApplet
 	public void mouseDragged()
 	{
 		println("Mouse dragged");
+		// float space = (leftMargin - rightMargin) / 30;
 	}
 
 	public void displayTasks()
@@ -53,11 +54,18 @@ public class Gantt extends PApplet
 		float leftMargin = width - (width * 0.05f);
 
 		float taskY = height * 0.15f;
+		float barH = height * 0.07f;
+		float hue = 0;
+		float barStart = 0;
+		float barEnd = 0;
 
 		for(int i = 1; i <= 30; i++)
 		{
 			x = map(i, 1, 30, rightMargin, leftMargin);
+			fill(255);
+			textAlign(CENTER, CENTER);
 			text(i, x, textY);
+			stroke(255);
 			line(x, lineY, x, height - lineY);
 		}
 
@@ -65,7 +73,15 @@ public class Gantt extends PApplet
 		{
 			Task t = tasks.get(i);
 			float y = map(i, 0, tasks.size(), taskY, height - taskY);
+			fill(255);
+			textAlign(LEFT, CENTER);
 			text(t.getTask(), rightMargin / 4, y);
+			hue = map(i, 0, tasks.size(), 0, 255);
+			fill(hue, 255, 255);
+			noStroke();
+			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
+			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
+			rect(barStart, y - barH / 2, barEnd - barStart, barH, 5);
 		}
 	}
 	
@@ -75,6 +91,7 @@ public class Gantt extends PApplet
 		printTasks();
 		fill(255);
 		stroke(255);
+		colorMode(HSB);
 	}
 	
 	public void draw()
