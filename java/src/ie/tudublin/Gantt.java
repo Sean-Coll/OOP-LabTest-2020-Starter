@@ -39,13 +39,59 @@ public class Gantt extends PApplet
 	
 	public void mousePressed()
 	{
-		println("Mouse pressed");	
+		// println("Mouse pressed");
+		float barStart = 0;
+		float barEnd = 0;
+		float barY = 0;
+		float barH = height * 0.07f;
+
+		for(int i = 0; i < tasks.size(); i++)
+		{
+			if(mouseX > barStart && mouseX <= barStart + 20 && mouseY > barY && mouseY <= barY + barH)
+			{
+				System.out.println("Cliked the start");
+			}
+	
+			if(mouseX < barEnd && mouseX >= barEnd - 20 && mouseY > barY && mouseY <= barY + barH)
+			{
+				System.out.println("Clicked the end");
+			}
+		}
+
+		
 	}
 
 	public void mouseDragged()
 	{
-		println("Mouse dragged");
-		float space = (leftMargin - rightMargin) / 30;
+		// println("Mouse dragged");
+		float barStart = 0;
+		float barEnd = 0;
+		float barY = 0;
+		float barH = height * 0.07f;
+		for(int i = 0; i < tasks.size(); i ++)
+		{
+			Task t = tasks.get(i);
+			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
+			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
+			barY = map(i, 0, tasks.size(), height * 0.15f, height - height * 0.15f);
+			if(mouseX > barStart && mouseX <= barStart + 20 && mouseY > barY && mouseY <= barY + barH)
+			{
+				System.out.println("Dragging something left");
+				if(t.getStart() > 1)
+				{
+					t.setStart(t.getStart() - 1);
+				}
+			}
+	
+			if(mouseX < barEnd && mouseX >= barEnd - 20 && mouseY > barY && mouseY <= barY + barH)
+			{
+				System.out.println("Dragging something right");
+				if(t.getEnd() < 30)
+				{
+					t.setEnd(t.getEnd() + 1);
+				}
+			}
+		}
 	}
 
 	public void displayTasks()
@@ -55,10 +101,11 @@ public class Gantt extends PApplet
 		float lineY = height * 0.075f;
 
 		float taskY = height * 0.15f;
-		float barH = height * 0.07f;
-		float hue = 0;
 		float barStart = 0;
 		float barEnd = 0;
+		float barY = 0;
+		float barH = height * 0.07f;
+		float hue = 0;
 		float barW = 0;
 
 		for(int i = 1; i <= 30; i++)
@@ -74,17 +121,17 @@ public class Gantt extends PApplet
 		for(int i = 0; i < tasks.size(); i++)
 		{
 			Task t = tasks.get(i);
-			float y = map(i, 0, tasks.size(), taskY, height - taskY);
+			barY = map(i, 0, tasks.size(), taskY, height - taskY);
 			fill(255);
 			textAlign(LEFT, CENTER);
-			text(t.getTask(), rightMargin / 4, y);
+			text(t.getTask(), rightMargin / 4, barY);
 			hue = map(i, 0, tasks.size(), 0, 255);
 			fill(hue, 255, 255);
 			noStroke();
 			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
 			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
 			barW = barEnd - barStart;
-			rect(barStart, y - barH / 2, barW, barH, 5);
+			rect(barStart, barY - barH / 2, barW, barH, 5);
 		}
 	}
 	
