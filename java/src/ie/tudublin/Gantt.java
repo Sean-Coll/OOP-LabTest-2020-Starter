@@ -44,7 +44,10 @@ public class Gantt extends PApplet
 		println("Mouse dragged");
 	}
 
-	
+	public void displayTasks()
+	{
+		
+	}
 	
 	public void setup() 
 	{
