@@ -12,6 +12,7 @@ public class Gantt extends PApplet
 
 	float rightMargin = 0;
 	float leftMargin = 0;
+	float mouseClickX = 0;
 	
 	public void settings()
 	{
@@ -44,21 +45,8 @@ public class Gantt extends PApplet
 		float barEnd = 0;
 		float barY = 0;
 		float barH = height * 0.07f;
+		mouseClickX = mouseX;
 
-		for(int i = 0; i < tasks.size(); i++)
-		{
-			if(mouseX > barStart && mouseX <= barStart + 20 && mouseY > barY && mouseY <= barY + barH)
-			{
-				System.out.println("Cliked the start");
-			}
-	
-			if(mouseX < barEnd && mouseX >= barEnd - 20 && mouseY > barY && mouseY <= barY + barH)
-			{
-				System.out.println("Clicked the end");
-			}
-		}
-
-		
 	}
 
 	public void mouseDragged()
@@ -68,30 +56,44 @@ public class Gantt extends PApplet
 		float barEnd = 0;
 		float barY = 0;
 		float barH = height * 0.07f;
+		// float mouseDragX = mouseX;
 		for(int i = 0; i < tasks.size(); i ++)
 		{
 			Task t = tasks.get(i);
 			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
 			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
 			barY = map(i, 0, tasks.size(), height * 0.15f, height - height * 0.15f);
-			if(mouseX > barStart && mouseX <= barStart + 20 && mouseY > barY && mouseY <= barY + barH)
+			if(mouseX > barStart - 20 && mouseX <= barStart + 20 && mouseY >= (barY - barH / 2) && mouseY <= (barY + barH / 2))
 			{
-				System.out.println("Dragging something left");
-				if(t.getStart() > 1)
+				System.out.println("Dragging something from left");
+			
+				if(t.getStart() > 1 && mouseX < barStart - 10)
 				{
-					t.setStart(t.getStart() - 1);
+						t.setStart(t.getStart() - 1);
+				}
+				if(t.getStart() < 30 && mouseX > barStart + 10)
+				{
+					if(t.getStart() != (t.getEnd() - 1))
+						t.setStart(t.getStart() + 1);
 				}
 			}
 	
-			if(mouseX < barEnd && mouseX >= barEnd - 20 && mouseY > barY && mouseY <= barY + barH)
+			if(mouseX > barEnd - 20 && mouseX <= barEnd + 20 && mouseY >= (barY - barH / 2) && mouseY <= (barY + barH / 2))
 			{
-				System.out.println("Dragging something right");
-				if(t.getEnd() < 30)
+				System.out.println("Dragging something from right");
+				
+				if(t.getEnd() > 1 && mouseX < barEnd - 10)
 				{
-					t.setEnd(t.getEnd() + 1);
+					if(t.getStart() != (t.getEnd() - 1))
+						t.setEnd(t.getEnd() - 1);
+				}
+				if(t.getEnd() < 30 && mouseX > barEnd + 10)
+				{
+						t.setEnd(t.getEnd() + 1);
 				}
 			}
 		}
+		
 	}
 
 	public void displayTasks()
