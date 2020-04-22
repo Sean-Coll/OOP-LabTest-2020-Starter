@@ -119,7 +119,7 @@ public class Gantt extends PApplet
 			barStart = map(t.getStart(), 1, 30, rightMargin, leftMargin);
 			barEnd = map(t.getEnd(), 1, 30, rightMargin, leftMargin);
 			barW = barEnd - barStart;
-			rect(barStart, barY - barH / 2, barW, barH, 5);
+			rect(barStart, barY - barH / 2, barW, barH, 10);
 		}
 	}
 	
